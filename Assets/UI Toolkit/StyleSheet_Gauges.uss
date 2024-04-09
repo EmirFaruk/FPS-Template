@@ -1,0 +1,73 @@
+#HealthBar {
+    display: flex;
+    color: rgba(27, 27, 27, 0);
+    justify-content: space-around;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+#HealthBar .unity-progress-bar__progress {
+    display: flex;
+    background-color: rgb(221, 63, 63);
+    flex-direction: column;
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    width: auto;
+    height: auto;
+    left: 0;
+    top: 0;
+    margin-left: -0.1px;
+    margin-right: -0.1px;
+    margin-top: -0.1px;
+    margin-bottom: -0.1px;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    justify-content: space-around;
+    align-self: stretch;
+}
+
+#HealthBar .unity-progress-bar__background {
+    display: flex;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    align-self: stretch;
+    align-items: stretch;
+    justify-content: space-around;
+    background-color: rgb(60, 56, 56);
+}
+
+#HealthBar #unity-progress-bar {
+    display: flex;
+    color: rgba(27, 27, 27, 0);
+    align-self: stretch;
+    justify-content: space-around;
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin-bottom: -18px;
+    background-color: rgba(67, 67, 67, 0);
+}

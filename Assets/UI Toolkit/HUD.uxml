@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="MainMenu" src="project://database/Assets/UI%20Toolkit/MainMenu.uxml?fileID=9197481963319205126&amp;guid=704f7bb743b9dd9409e2acbebd45b510&amp;type=3#MainMenu" />
+    <ui:Template name="OptionsMenu" src="project://database/Assets/UI%20Toolkit/OptionsMenu.uxml?fileID=9197481963319205126&amp;guid=a617093bb702b1d498d4dd2ab3f28ed5&amp;type=3#OptionsMenu" />
+    <ui:Template name="Previews" src="project://database/Assets/UI%20Toolkit/Previews.uxml?fileID=9197481963319205126&amp;guid=5a7dc0ad8ea5be34b917567923640b49&amp;type=3#Previews" />
+    <ui:Template name="Gauges" src="project://database/Assets/UI%20Toolkit/Gauges.uxml?fileID=9197481963319205126&amp;guid=a2a10e1b39a31f546915142694c85372&amp;type=3#Gauges" />
+    <ui:Template name="EndScreen" src="project://database/Assets/UI%20Toolkit/EndScreen.uxml?fileID=9197481963319205126&amp;guid=4f32a016404f0a1409a4504dfdaef0f3&amp;type=3#EndScreen" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheet.uss?fileID=7433441132597879392&amp;guid=83abdff035d330245b5bdad767451b81&amp;type=3#StyleSheet" />
+    <ui:Instance template="MainMenu" name="MainMenu" style="flex-grow: 1; display: flex; align-self: stretch; justify-content: flex-start;" />
+    <ui:Instance template="OptionsMenu" name="OptionsMenu" style="flex-grow: 1; display: none;" />
+    <ui:Instance template="Previews" name="Previews" style="display: none; flex-grow: 1;" />
+    <ui:Instance template="Gauges" name="Gauges" style="display: none; visibility: visible; overflow: visible; flex-grow: 1;" />
+    <ui:Instance template="EndScreen" name="EndScreen" style="flex-grow: 1; display: none; align-self: stretch; justify-content: flex-start;" />
+</ui:UXML>
