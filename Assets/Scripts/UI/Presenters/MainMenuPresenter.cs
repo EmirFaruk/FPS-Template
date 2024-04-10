@@ -4,8 +4,11 @@ using UnityEngine.UIElements;
 
 public class MainMenuPresenter : VisualElement
 {
+    #region VARIABLES
+
     // Events
     public static event Action OnStartButtonClicked = () => { };
+    public static event Action OnResumeButtonClicked = () => { };
     public static event Action OnOptionsButtonClicked = () => { };
 
     private VisualElement root;
@@ -14,17 +17,24 @@ public class MainMenuPresenter : VisualElement
     private Button startButton;
     private Button quitButton;
 
+    private const string BUTTON_START = "Button_Start";
+    private const string BUTTON_OPTIONS = "Button_Options";
+    private const string BUTTON_QUIT = "Button_Quit";
+    private const string RESUME = "Resume";
+
+    #endregion
+
     public MainMenuPresenter(VisualElement root)
     {
         this.root = root;
         //root.Q<Button>
-        startButton = root.Q<Button>("Button_Start");
+        startButton = root.Q<Button>(BUTTON_START);
         startButton.RegisterCallback<ClickEvent>(StartGame);
 
-        Button optionsButton = root.Q<Button>("Button_Options");
+        Button optionsButton = root.Q<Button>(BUTTON_OPTIONS);
         optionsButton.clicked += () => OnOptionsButtonClicked?.Invoke();
 
-        quitButton = root.Q<Button>("Button_Quit");
+        quitButton = root.Q<Button>(BUTTON_QUIT);
         quitButton.RegisterCallback<ClickEvent>(QuitGame);
     }
 
@@ -34,15 +44,18 @@ public class MainMenuPresenter : VisualElement
     {
         Debug.Log("Game Started!");
 
-        startButton.text = "Resume";
+        if (startButton.text != RESUME) OnStartButtonClicked.Invoke();
+        else OnResumeButtonClicked.Invoke();
+
+        startButton.text = RESUME;
+
         root.SetEnability(false);
 
-        OnStartButtonClicked.Invoke();
     }
 
     void QuitGame(ClickEvent evt)
     {
-        Debug.Log("Game Quit!");
+        Debug.Log("Quit!");
         Application.Quit();
 
         #region Editor : Quit

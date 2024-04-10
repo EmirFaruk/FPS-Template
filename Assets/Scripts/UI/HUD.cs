@@ -41,42 +41,39 @@ public class HUD : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             this.SetCursorVisibility(!UnityEngine.Cursor.visible);
             this.Pause(UnityEngine.Cursor.visible);
         }
+
         if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            bool isEnable = !mainMenu.IsEnable();
+            ToggleTabMenu();
+    }
 
-            this.SetCursorVisibility(isEnable);
-            this.Pause(isEnable);
+    private static void OpenRandomWidget()
+    {
+        ActiveElement?.SetEnability(false);
 
-            mainMenu.SetEnability(ActiveElement, isEnable);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            ActiveElement?.SetEnability(false);
+        int Lenght = Enum.GetNames(typeof(WidgetData.Widgets)).Length;
+        WidgetData.Widgets randomWidget = (WidgetData.Widgets)UnityEngine.Random.Range(0, Lenght);
 
-            int Lenght = Enum.GetNames(typeof(WidgetData.Widgets)).Length;
-            WidgetData.Widgets randomWidget = (WidgetData.Widgets)UnityEngine.Random.Range(0, Lenght);
-
-            randomWidget.OpenWidget();
-        }
+        randomWidget.OpenWidget();
     }
 
     #region Enable/Disable
     private void OnEnable()
     {
-        MainMenuPresenter.OnStartButtonClicked += () => StartHUD();
+        MainMenuPresenter.OnStartButtonClicked += () => ShowGauges();
+        MainMenuPresenter.OnResumeButtonClicked += () => ShowGauges();
         MainMenuPresenter.OnOptionsButtonClicked += () => optionsMenu.SetEnability(ActiveElement, true);
         OptionsMenuPresenter.OnBackButtonClicked += () => mainMenu.SetEnability(ActiveElement, true);
     }
 
     private void OnDisable()
     {
-        MainMenuPresenter.OnStartButtonClicked -= () => StartHUD();
+        MainMenuPresenter.OnStartButtonClicked -= () => ShowGauges();
+        MainMenuPresenter.OnResumeButtonClicked -= () => ShowGauges();
         MainMenuPresenter.OnOptionsButtonClicked -= () => optionsMenu.SetEnability(ActiveElement, true);
         OptionsMenuPresenter.OnBackButtonClicked -= () => mainMenu.SetEnability(ActiveElement, true);
     }
@@ -116,7 +113,7 @@ public class HUD : MonoBehaviour
         root.SetButtonsSFX();
     }
 
-    private void StartHUD()
+    private void ShowGauges()
     {
         ActiveElement = gauges.SetEnability(ActiveElement, true);
 
@@ -124,6 +121,15 @@ public class HUD : MonoBehaviour
         this.Pause(false);
     }
 
+    private void ToggleTabMenu()
+    {
+        bool isEnable = !mainMenu.IsEnable();
+
+        this.SetCursorVisibility(isEnable);
+        this.Pause(isEnable);
+
+        mainMenu.SetEnability(ActiveElement, isEnable);
+    }
     #endregion
 }
 

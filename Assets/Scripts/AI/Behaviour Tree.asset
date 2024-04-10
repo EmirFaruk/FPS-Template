@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: SequencerNode
   m_EditorClassIdentifier: 
   nodeName: Chase
-  nodePosition: {x: -147, y: 229.6}
+  nodePosition: {x: -148.20001, y: 229.6}
   breakpoint: 0
   decorators:
   - {fileID: -4593416485787616777}
@@ -149,7 +149,7 @@ MonoBehaviour:
   groups: []
   notes:
   - {fileID: -3818681681050834665}
-  selectedNode: {fileID: 4607131782528517944}
+  selectedNode: {fileID: -3891124671340454207}
 --- !u!114 &177996442557527370
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SoundMixerManager : MonoBehaviour
 {
-    public static readonly string[] sliderNames = new string[] { "MasterVolume", "MusicVolume", "SfxVolume" };
+    public static readonly string[] volumesNames = new string[] { "MasterVolume", "MusicVolume", "SfxVolume" };
 
     private void OnEnable()
     {
@@ -16,13 +16,13 @@ public class SoundMixerManager : MonoBehaviour
 
     private void SetVolume((int, float) value)
     {
-        value.Item2 = Mathf.Clamp(value.Item2, 0.0001f, 1f);
-        AudioManager.AudioMixer.SetFloat(sliderNames[value.Item1], Mathf.Log10(value.Item2) * 20f);
+        var volume = Mathf.Log10(Mathf.Clamp(value.Item2, 0.0001f, 1f));
+        AudioManager.AudioMixer.SetFloat(volumesNames[value.Item1], volume * 20f);
     }
 
     private void GetVolumeOnStart()
     {
-        for (int i = 0; i < sliderNames.Length; i++)
+        for (int i = 0; i < volumesNames.Length; i++)
         {
             SetVolume((i, OptionsMenuPresenter.OnGetSlidersValue.Invoke(i)));
         }

@@ -7,7 +7,7 @@ using UnityEngine;
 public class LevelCountdownController : MonoBehaviour
 {
     #region VARIABLES
-    public static Action OnLevelTimeEnd = () => { };
+    public static Action OnLevelExpiration = () => { };
     public static Action<bool> OnLevelTimeReloadStart = _ => { };
     public static Action OnLevelTimeReloadEnd = () => { };
     public static Action<int> OnLevelTimeRemaining = _ => { };
@@ -17,10 +17,11 @@ public class LevelCountdownController : MonoBehaviour
 
     [SerializeField] private int timeRemaining = 50;
     private int defaultRemainingTime = 0;
+    private const float criticalTimePercentage = .2f;
 
     private Color defaultColor;
 
-    Queue<float> CountdownTimes = new Queue<float>();
+    private Queue<float> CountdownTimes = new Queue<float>();
 
     private bool countdownInUpdating = false;
     private bool canCountdown => timeRemaining >= 0 && !countdownInUpdating && !destroyCancellationToken.IsCancellationRequested;
@@ -31,7 +32,6 @@ public class LevelCountdownController : MonoBehaviour
     {
         OnResetCountdown += ControlCountdownTasks;
     }
-
 
     private void OnDisable()
     {
@@ -52,13 +52,11 @@ public class LevelCountdownController : MonoBehaviour
     {
         defaultRemainingTime = timeRemaining;
 
-        //countdownText = GetComponent<TextMeshProUGUI>();
-        //defaultColor = countdownText.color;
-
         UpdateCountdownDisplay();
     }
     #endregion
 
+    #region Countdown Base
     private void StartCountdown(int targetTime)
     {
         if (timeRemaining == targetTime) CountdownAsync();
@@ -66,7 +64,7 @@ public class LevelCountdownController : MonoBehaviour
 
     async void CountdownAsync()
     {
-        for (; canCountdown; --timeRemaining)
+        while (canCountdown)
         {
             UpdateCountdownDisplay();
 
@@ -77,10 +75,8 @@ public class LevelCountdownController : MonoBehaviour
 #else
             await Task.Delay(1000);
 #endif
+            timeRemaining--;
         }
-
-        //if (!destroyCancellationToken.IsCancellationRequested)
-        //  EndLevelTime();
     }
 
     private void UpdateCountdownDisplay()
@@ -90,23 +86,11 @@ public class LevelCountdownController : MonoBehaviour
 
     private bool IsTimeCritical()
     {
-        return timeRemaining <= Math.Max(10, defaultRemainingTime * .2f);
+        return timeRemaining <= Math.Max(10, defaultRemainingTime * criticalTimePercentage);
     }
+    #endregion
 
-    private void EndLevelTime()
-    {
-        //countdownText.fontSize = 42;
-        //countdownText.text = "Time End!";
-
-        Invoke(nameof(TriggerLevelEndTime), 1);
-        Invoke(nameof(Restart), 1);
-    }
-
-    private void TriggerLevelEndTime()
-    {
-        OnLevelTimeEnd?.Invoke();
-    }
-
+    #region Time Joint Tasks
     private void ControlCountdownTasks(float time)
     {
         CountdownTimes.Enqueue(time);
@@ -154,23 +138,37 @@ public class LevelCountdownController : MonoBehaviour
 
         ControlTasksEnding(targetTime);
     }
+    #endregion
 
+    #region Time Ended Methods
+    private void TriggerExpiration()
+    {
+        Invoke(nameof(InvokeLevelExpiration), 1);
+        Invoke(nameof(Quit), 1);
+    }
 
-    public async void Restart()
+    private void InvokeLevelExpiration()
+    {
+        OnLevelExpiration.Invoke();
+    }
+
+    public async void Quit()
     {
         PrepareForQuit();
 
-        /*for (int i = 10; i >= 0; i--, await Task.Delay(1000))
-            countdownText.text = "Quit in\n" + i;*/
+        for (int i = 10; i >= 0; i--, await Task.Delay(1000))
+            //countdownText.text = "Quit in\n" + i;
 
-        Application.Quit();
+            Application.Quit();
     }
 
     private void PrepareForQuit()
     {
+        //Invoke
         //countdownText.fontSize = 42;
         //countdownText.color = Color.red;
     }
+    #endregion
 
     #endregion
 }

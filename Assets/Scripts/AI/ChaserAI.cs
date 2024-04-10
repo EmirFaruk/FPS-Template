@@ -7,6 +7,7 @@ namespace RunnnerGame.Enemy
     [RequireComponent(typeof(BehaviourRunner))]
     public class ChaserAI : MonoBehaviour
     {
+        #region VARIABLES
         private BehaviourRunner behaviourRunner;
         private Blackboard blackboard;
 
@@ -15,11 +16,13 @@ namespace RunnnerGame.Enemy
         [SerializeField] private float attackCooldown = 2f;
         [SerializeField] private float attackDistance = 4f;
         private BoolKey canAttackKey;
-        private bool canAttack = true;
+        private bool canAttack = false;
+        private bool onCooldown = false;
 
         private Transform player;
         private TransformKey playerTransformKey;
         private FloatKey distanceToPlayerKey;
+        #endregion
 
         private void Awake()
         {
@@ -50,18 +53,22 @@ namespace RunnnerGame.Enemy
         {
             playerTransformKey.SetValue(player);
             distanceToPlayerKey.SetValue(Vector3.Distance(transform.position, player.position));
+            if (!onCooldown) canAttackKey.SetValue(canAttack = distanceToPlayerKey.GetValue() <= attackDistance);
         }
 
         public async void OnAttack()
         {
             if (canAttack && !destroyCancellationToken.IsCancellationRequested)
             {
-                canAttackKey.SetValue(canAttack = false);
-                Debug.Log("Attack : " + damage);
                 PlayerHealth.OnTakeDamage?.Invoke(-damage);
+                Debug.Log("Attack : " + damage);
+
+                canAttackKey.SetValue(canAttack = false);
+                onCooldown = true;
 
                 await Task.Delay(((int)(attackCooldown * 1000)));
 
+                onCooldown = false;
                 canAttackKey.SetValue(canAttack = true);
             }
         }
