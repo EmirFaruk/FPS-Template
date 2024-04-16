@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
 using DG.Tweening;
-using RunnnerGame.Manager;
+using System;
+using UnityEngine;
 
 public class Diamond : MonoBehaviour, ICollectible
 {
-    private Action action;
+    private Action action = () => { };
 
     [SerializeField]
     private float rotationSpeed;
 
     [SerializeField]
-    private float point;
+    private float point = 1;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         action = ApplyEffect;
@@ -24,17 +20,24 @@ public class Diamond : MonoBehaviour, ICollectible
 
     void ApplyEffect()
     {
-        CollectibleManager.Instance.AddPoint(point);
+        CollectibleManager.AddPoint(point);
 
         // add points 
         // or stun enemy etc.
     }
 
 
-    // Update is called once per frame
     void Update()
     {
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Collect();
+        }
     }
 
     public void Collect()
@@ -43,8 +46,8 @@ public class Diamond : MonoBehaviour, ICollectible
 
         print("COLLECT " + this.gameObject.name);
 
-        transform.DOMoveY(endVal, 1).OnComplete(()=> gameObject.SetActive(false));
-        action?.Invoke();
+        transform.DOMoveY(endVal, 1).OnComplete(() => gameObject.SetActive(false));
+        action.Invoke();
     }
 
     private void OnDisable()

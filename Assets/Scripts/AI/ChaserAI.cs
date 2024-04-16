@@ -22,31 +22,45 @@ namespace RunnnerGame.Enemy
         private Transform player;
         private TransformKey playerTransformKey;
         private FloatKey distanceToPlayerKey;
+
+        private enum KeyName
+        {
+            AttackDistance,
+            CanAttack,
+            Player,
+            Distance
+        }
         #endregion
 
         private void Awake()
         {
-            behaviourRunner = GetComponent<BehaviourRunner>();
-            blackboard = behaviourRunner.GetBlackboard();
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-
-            blackboard.SetFoundKey("AttackDistance", new FloatKey(), attackCooldown);
-            canAttackKey = (BoolKey)blackboard.SetFoundKey("CanAttack", new BoolKey(), canAttack);
-
-            if (blackboard.TryFindKey("Player", out TransformKey playerTransformKey))
-            {
-                this.playerTransformKey = playerTransformKey;
-            }
-
-            if (blackboard.TryFindKey("Distance", out FloatKey distanceToPlayerKey))
-            {
-                this.distanceToPlayerKey = distanceToPlayerKey;
-            }
+            Initialize();
         }
 
         private void Update()
         {
             CheckDistance();
+        }
+
+        private void Initialize()
+        {
+            behaviourRunner = GetComponent<BehaviourRunner>();
+            blackboard = behaviourRunner.GetBlackboard();
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+
+            InitializeKeys();
+        }
+
+        private void InitializeKeys()
+        {
+            blackboard.SetFoundKey(KeyName.AttackDistance.ToString(), new FloatKey(), attackCooldown);
+            canAttackKey = (BoolKey)blackboard.SetFoundKey(KeyName.CanAttack.ToString(), new BoolKey(), canAttack);
+            playerTransformKey = (TransformKey)blackboard.SetFoundKey(KeyName.Player.ToString(), new TransformKey(), player);
+
+            if (blackboard.TryFindKey(KeyName.Distance.ToString(), out FloatKey distanceToPlayerKey))
+            {
+                this.distanceToPlayerKey = distanceToPlayerKey;
+            }
         }
 
         void CheckDistance()
@@ -74,4 +88,3 @@ namespace RunnnerGame.Enemy
         }
     }
 }
-

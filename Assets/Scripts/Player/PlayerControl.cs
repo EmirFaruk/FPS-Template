@@ -1,4 +1,3 @@
-using RunnnerGame.Manager;
 using UnityEngine;
 
 
@@ -49,13 +48,13 @@ namespace RunnnerGame.PlayerControl
             _jumpHash = Animator.StringToHash("Jump");
             _groundHash = Animator.StringToHash("Grounded");
             _fallingHash = Animator.StringToHash("Falling");
-           // _grounded = true;
+            // _grounded = true;
         }
 
 
         private void FixedUpdate()
         {
-           SampleGround();
+            SampleGround();
             Move();
             HandleJump();
         }

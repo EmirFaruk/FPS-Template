@@ -1,27 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace RunnnerGame.Manager
+public class CollectibleManager : MonoBehaviour
 {
-    public class CollectibleManager : MonoBehaviour
+    private static float totalPoint;
+
+    public static void AddPoint(float point)
     {
-        private static CollectibleManager instance;
-        public static CollectibleManager Instance => instance;
-
-        private float totalPoint;
-
-        private void Awake()
-        {
-            if (instance == null) instance = this;
-        }
-
-        public void AddPoint(float point)
-        {
-            totalPoint += point;
-            print(totalPoint);
-        }
+        totalPoint += point;
+        print("totalPoint : " + totalPoint);
     }
 }
 
